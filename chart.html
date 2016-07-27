@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script type="text/javascript">
+
+window.onload = function () {
+CanvasJS.addColorSet("greenShades",
+                [//colorSet Array
+
+               "#80ccff",
+                "#80ccff",
+                "#80ccff",
+                "#80ccff",
+                "#90EE90"  
+                        
+                ]);
+	var chart = new CanvasJS.Chart("chartContainer", {
+	colorSet: "greenShades",
+	
+	 
+		title:{
+			text: "Fraud Score Trend"              
+		},
+			
+		toolTip: {
+		  content: "{label} <br/>{name} : {y} "
+		},
+		data: [
+		{
+			
+			
+			dataPoints: [
+				{ label: "Week1", y: 650},
+				{ label: "Week2", y: 100},
+				{ label: "Week3", y: 150},
+				{ label: "Week4", y: 50}
+				
+			]
+		}
+		
+		]
+	
+	});
+	chart.render();
+}
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 300px; width: 40%;"></div>
+</body>
+</html>
