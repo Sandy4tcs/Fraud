@@ -1,0 +1,56 @@
+
+
+#signin{
+	padding-top:30px;
+	font-size:85%
+}
+#header{
+	background-color:black;
+	color:white;
+}
+.bg-4{
+	background-color:#2f2f2f;
+	color:white;
+}
+
+
+.col-md-3 .control-label{
+float:left;
+}
+
+  .panel-heading {
+      color: #fff !important;
+      background-color: black !important;
+	   border-color:black;
+  
+  }
+ .imagesize{
+  width:120px; 
+  height:32px
+ }
+ 
+ .panel {
+      border: 1px solid black; 
+	  }
+	#btn-signup{
+    color: #fff;
+    background-color: black;
+    border-color: black;}
+	
+	
+	.search a{
+	color:black;}
+.hide{
+	display:none;
+}
+.animation {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .6 ) 
+                no-repeat;
+}
