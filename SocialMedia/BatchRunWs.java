@@ -22,6 +22,15 @@ public class BatchRunWs {
 	        try {
 	             
 	             Runtime.getRuntime().exec(filePath);
+	             BufferedReader br = new BufferedReader(new FileReader("D:\\status_communication.txt"));
+	             while(true)
+	             {
+	            	 if(br.readLine()!=null)
+	            	 {
+	            		 break;
+	            	 }
+	            	
+	             }
 	             System.out.println("Success");
 	             
 	        } catch (Exception e) {
