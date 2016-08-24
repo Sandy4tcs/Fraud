@@ -26,9 +26,11 @@ public class jsonread  {
  		ResultSet rs = null,rs_insert=null;
  		PreparedStatement st = null,st_insert=null;
 	JSONParser parser = new JSONParser();
+	BufferedWriter out = null;
 
 	try {
-
+		out = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(new File("D:\\status_communication.txt"))));
 		Object obj = parser.parse(new FileReader("D:\\FRAUDSCORE_java.json"));
 
 		JSONArray Ja = (JSONArray) obj;
@@ -49,7 +51,7 @@ public class jsonread  {
 			st_insert.setString(7, ((JSONObject)Ja.get(i)).get("SCORE").toString());
 			st_insert.executeUpdate();
 		}
-		
+		out.write("success");
 		connection.commit();
 
 	} catch (FileNotFoundException e) {
@@ -63,7 +65,7 @@ public class jsonread  {
 		sq.printStackTrace();
 	}finally{
 		connection.close();
-
+		out.close();
      }
      }
 }
