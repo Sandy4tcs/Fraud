@@ -30,7 +30,7 @@ public class jsonread  {
 
 	try {
 		out = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream(new File("D:\\status_communication.txt"))));
+				new FileOutputStream("D:\\status_communication.txt")));
 		Object obj = parser.parse(new FileReader("D:\\FRAUDSCORE_java.json"));
 
 		JSONArray Ja = (JSONArray) obj;
