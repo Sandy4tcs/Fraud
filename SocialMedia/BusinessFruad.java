@@ -93,9 +93,12 @@ public class BusinessFruad {
 		ArrayList<String> candidate_email = new ArrayList<String>();
 		PrintWriter out = null;
 		Date currentDate=new Date();
+		BufferedWriter out_status = null;
 		// SELECT QUERY
 
 		try {
+			out_status = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(new File("D:\\status_communication.txt"))));
 			connection = database.getConnection();
 			String query_insert = "INSERT INTO SOCIAL_MEDIA(EMAIL,TWITTER_HANDLE) VALUES(?,?)";
 			st_insert = connection.prepareStatement(query_insert);
@@ -167,6 +170,7 @@ public class BusinessFruad {
 
 				}finally{
 				 out.close();
+				 out_status.close();
 				}
 
 			}
