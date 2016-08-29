@@ -62,7 +62,7 @@ public class jsonread  {
 			st_insert.setString(7, ((JSONObject)Ja.get(i)).get("SCORE").toString());
 			st_insert.executeUpdate();
 		}
-		String query_batch="INSERT INTO BATCH_JOB(STATUS,JOB_TIME) VALUES(?,?)";
+		String query_batch="UPDATE BATCH_JOB SET STATUS=?JOB_TIME=? WHERE JOB_ID=(SELECT MAX(JOB_ID) FROM BATCH_JOB)";
 		st_batch =connection.prepareStatement(query_batch);
 		st_batch.setString(1, "Completed");
 		st_batch.setString(2, format.format(currentDate));
