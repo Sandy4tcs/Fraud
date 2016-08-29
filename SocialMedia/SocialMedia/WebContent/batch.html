@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+		
+	  <link rel="stylesheet" href="css/style.css">
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+	 <link rel="stylesheet" href="css/style.css">
+	  <link rel="stylesheet" href="css/tabstyle.css">
+    <title>Batch Jobs</title>
+    <script type="text/javascript">
+    var json="http://" + location.hostname +":8080/FraudDetection/rest/showbatch/batch";
+    $.getJSON(json, function(data) {
+		var array=[];
+			var i=0;
+		$.each(data, function(key, val) {
+			 $.each(val, function(k, v){
+			  array[i]=v;
+			   i++;
+			 });
+			 var tr=$('<tr></tr>');
+			 $('<td>'+array[0]+'</td>').appendTo(tr);
+			 $('<td>'+array[1]+'</td>').appendTo(tr);
+			 $('<td>'+array[2]+'</td>').appendTo(tr);
+			 tr.appendTo("#batchTable");
+			 i=0;
+		});
+	});
+    </script>
+    <style>
+    table
+    {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+	}
+	</style>
+</head>
+<body>
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+		</div>
+		<div class="col-md-8">
+		<h3>Batch Table</h3>
+			<table class="table-fill" id="batchTable">
+          		<tr>
+		    		<th>Serial No</th>
+		    		<th>Status</th>
+		   			<th>Job Time</th>
+		  		</tr>
+		  	</table>
+		</div>
+		<div class="col-md-2">
+		
+		</div>
+	</div>
+	</div>
+</body>
+</html>

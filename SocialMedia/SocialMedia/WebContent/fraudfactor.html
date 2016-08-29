@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Fraud Factor</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="css/style.css">
+   <link rel="stylesheet" href="css/tabstyle.css">
+<script type="text/javascript">
+var json1=null;
+var json2=null;
+var json3=null;
+var json4=null;
+var json5=null;
+var json6=null;
+var json7=null;
+var json8=null;
+	$(document).ready(function(){
+		var getUrlParameter = function getUrlParameter(sParam) {
+		    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+		        sURLVariables = sPageURL.split('&'),
+		        sParameterName,
+		        i;
+
+		    for (i = 0; i < sURLVariables.length; i++) {
+		        sParameterName = sURLVariables[i].split('=');
+
+		        if (sParameterName[0] === sParam) {
+		            return sParameterName[1] === undefined ? true : sParameterName[1];
+		        }
+		    }
+		};
+		param=getUrlParameter('key');
+		json1="http://" + location.hostname +":8080/FraudDetection/rest/benefit/details?email="+param+"&&days=7";
+		$.getJSON(json1, function(data) {
+			var array1=[];
+				var i=0;
+			$.each(data, function(key, val) {
+				 $.each(val, function(k, v){
+				  array1[i]=v;
+				   i++;
+				 });
+				 var tr=$("<tr></tr>");
+				 $("<td>"+array1[0]+"</td>").appendTo(tr);
+				 tr.appendTo("#benefit1");
+				 i=0;
+			});
+		});
+		
+		
+		json2="http://" + location.hostname +":8080/FraudDetection/rest/benefit/details?email="+param+"&&days=14";
+		
+		$.getJSON(json2, function(data) {
+			var array1=[];
+				var i=0;
+			$.each(data, function(key, val) {
+				 $.each(val, function(k, v){
+				  array1[i]=v;
+				   i++;
+				 });
+				 var tr=$("<tr></tr>");
+				 $("<td>"+array1[0]+"</td>").appendTo(tr);
+				 tr.appendTo("#benefit2");
+				 
+				 i=0;
+			});
+		});
+		
+		json3="http://" + location.hostname +":8080/FraudDetection/rest/benefit/details?email="+param+"&&days=21";
+		
+		$.getJSON(json3, function(data) {
+			var array1=[];
+				var i=0;
+			$.each(data, function(key, val) {
+				 $.each(val, function(k, v){
+				  array1[i]=v;
+				   i++;
+				 });
+				 var tr=$("<tr></tr>");
+				 $("<td>"+array1[0]+"</td>").appendTo(tr);
+				 tr.appendTo("#benefit3");
+				 i=0;
+			});
+		});
+		
+		json4="http://" + location.hostname +":8080/FraudDetection/rest/benefit/details?email="+param+"&&days=28";
+		
+		$.getJSON(json4, function(data) {
+			var array1=[];
+				var i=0;
+			$.each(data, function(key, val) {
+				 $.each(val, function(k, v){
+				  array1[i]=v;
+				   i++;
+				 });
+				 var tr=$("<tr></tr>");
+				 $("<td>"+array1[0]+"</td>").appendTo(tr);
+				 tr.appendTo("#benefit4");
+				 i=0;
+			});
+		});
+		
+		json5="http://" + location.hostname +":8080/FraudDetection/rest/fraud/details?email="+param+"&&startday=7&&endday=1";
+		
+		$.getJSON(json5, function(data) {
+			var array1=[];
+				var i=0;
+			$.each(data, function(key, val) {
+				 $.each(val, function(k, v){
+				  array1[i]=v;
+				   i++;
+				 });
+				 var tr=$("<tr></tr>");
+				 $("<td>"+array1[3]+"</td>").appendTo(tr);
+				 $("<td>"+array1[0]+"</td>").appendTo(tr);
+				 $("<td>"+array1[1]+"</td>").appendTo(tr);
+				 $("<td><a href=\""+array1[2]+"\"><img src=\"images/Twitter-icon.png\" class=\"imagesize\"></a></td>").appendTo(tr);
+				 tr.appendTo("#evidence1"); 
+				 i=0;
+			});
+		});
+		
+		json6="http://" + location.hostname +":8080/FraudDetection/rest/fraud/details?email="+param+"&&startday=14&&endday=7";
+		
+		$.getJSON(json6, function(data) {
+			var array1=[];
+				var i=0;
+			$.each(data, function(key, val) {
+				 $.each(val, function(k, v){
+				  array1[i]=v;
+				   i++;
+				 });
+				 var tr=$("<tr></tr>");
+				 $("<td>"+array1[3]+"</td>").appendTo(tr);
+				 $("<td>"+array1[0]+"</td>").appendTo(tr);
+				 $("<td>"+array1[1]+"</td>").appendTo(tr);
+				 $("<td><a href=\""+array1[2]+"\"><img src=\"images/Twitter-icon.png\" class=\"imagesize\"></a></td>").appendTo(tr);
+				 tr.appendTo("#evidence2"); 
+				 i=0;
+			});
+		});
+		
+		json7="http://" + location.hostname +":8080/FraudDetection/rest/fraud/details?email="+param+"&&startday=21&&endday=14";
+		
+		$.getJSON(json7, function(data) {
+			var array1=[];
+				var i=0;
+			$.each(data, function(key, val) {
+				 $.each(val, function(k, v){
+				  array1[i]=v;
+				   i++;
+				 });
+				 var tr=$("<tr></tr>");
+				 $("<td>"+array1[3]+"</td>").appendTo(tr);
+				 $("<td>"+array1[0]+"</td>").appendTo(tr);
+				 $("<td>"+array1[1]+"</td>").appendTo(tr);
+				 $("<td><a href=\""+array1[2]+"\"><img src=\"images/Twitter-icon.png\" class=\"imagesize\"></a></td>").appendTo(tr);
+				 tr.appendTo("#evidence3"); 
+				 i=0;
+			});
+		});
+		
+		json8="http://" + location.hostname +":8080/FraudDetection/rest/fraud/details?email="+param+"&&startday=28&&endday=21";
+		
+		$.getJSON(json8, function(data) {
+			var array1=[];
+				var i=0;
+			$.each(data, function(key, val) {
+				 $.each(val, function(k, v){
+				  array1[i]=v;
+				   i++;
+				 });
+				 var tr=$("<tr></tr>");
+				 $("<td>"+array1[3]+"</td>").appendTo(tr);
+				 $("<td>"+array1[0]+"</td>").appendTo(tr);
+				 $("<td>"+array1[1]+"</td>").appendTo(tr);
+				 $("<td><a href=\""+array1[2]+"\"><img src=\"images/Twitter-icon.png\" class=\"imagesize\"></a></td>").appendTo(tr);
+				 tr.appendTo("#evidence4"); 
+				 i=0;
+			});
+		});
+	});
+
+</script>
+</head>
+<body>
+
+<div class="container-fluid">
+ 
+ <div id="historyfraud" style="margin-top:40px;" class="mainbox col-md-10 col-md-offset-1 ">
+ <div class="panel panel-default" style="border-color:white">
+                        <div class="panel-heading  text-center">
+                            <div class="panel-title">Fraud Score Factors</div>
+                            
+                        </div>
+  
+         
+		 <h2>WEEK 1</h2>
+		 
+   <div class="row">
+						<div class="col-md-4" style="padding-left:0px; padding-right:0px">   
+<div class="table-responsive">
+<table  class="table-fill table table-bordered table-hover table-striped">
+<thead>
+<tr>
+<th class="text-left">Benefit Availed</th>
+</tr>
+</thead>
+<tbody class="table-hover" id="benefit1">
+
+</tbody>
+</table>
+                        
+                        </div>
+                        </div>
+                        <div class="col-md-8" style="padding-left:0px; padding-right:0px"> 
+						<div class="table-responsive">
+							
+						
+						<table  class="table-fill table table-bordered table-hover table-striped">
+						<thead>
+						<tr>
+						<th class="text-left">Post</th>
+						<th class="text-left">Evidence Category</th>
+						<th class="text-left">Score</th>
+						<th class="text-left">Evidence Link</th>
+						
+						</tr>
+						</thead>
+						<tbody class="table-hover" id="evidence1">
+						
+						</tbody>
+						</table>
+						                        
+						                        </div>
+						
+						
+						</div>
+                        </div>
+						
+						
+		 <h2>WEEK 2</h2>
+<div class="row">
+						<div class="col-md-4" style="padding-left:0px; padding-right:0px">   
+
+<div class="table-responsive">
+<table  class="table-fill table table-bordered table-hover table-striped">
+<thead>
+<tr>
+<th class="text-left">Benefit Availed</th>
+</tr>
+</thead>
+<tbody class="table-hover" id="benefit2">
+
+</tbody>
+</table>
+                        
+                        </div>
+                        </div>
+                        <div class="col-md-8" style="padding-left:0px; padding-right:0px"> 
+						<div class="table-responsive">
+							
+						
+						<table  class="table-fill table table-bordered table-hover table-striped">
+						<thead>
+						<tr>
+						<th class="text-left">Post</th>
+						<th class="text-left">Evidence Category</th>
+						<th class="text-left">Score</th>
+						<th class="text-left">Evidence Link</th>
+						
+						</tr>
+						</thead>
+						<tbody class="table-hover" id="evidence2">
+						
+						</tbody>
+						</table>
+						                        
+						                        </div>
+						
+						
+						</div>
+                        </div>
+						
+							
+		 <h2>WEEK 3</h2>
+<div class="row">
+						<div class="col-md-4" style="padding-left:0px; padding-right:0px">   
+
+<div class="table-responsive">
+<table  class="table-fill table table-bordered table-hover table-striped">
+<thead>
+<tr>
+<th class="text-left">Benefit Availed</th>
+</tr>
+</thead>
+<tbody class="table-hover" id="benefit3">
+
+</tbody>
+</table>
+                        
+                        </div>
+                        </div>
+                        <div class="col-md-8" style="padding-left:0px; padding-right:0px"> 
+						<div class="table-responsive">
+							
+						
+						<table  class="table-fill table table-bordered table-hover table-striped">
+						<thead>
+						<tr>
+						<th class="text-left">Post</th>
+						<th class="text-left">Evidence Category</th>
+						<th class="text-left">Score</th>
+						<th class="text-left">Evidence Link</th>
+						
+						</tr>
+						</thead>
+						<tbody class="table-hover" id="evidence3">
+						
+						</tbody>
+						</table>
+						                        
+						                        </div>
+						
+						
+						</div>
+                        </div>
+						
+							
+		 <h2>WEEK 4</h2>
+<div class="row">
+						<div class="col-md-4" style="padding-left:0px; padding-right:0px">   
+
+<div class="table-responsive">
+<table  class="table-fill table table-bordered table-hover table-striped">
+<thead>
+<tr>
+<th class="text-left">Benefit Availed</th>
+</tr>
+</thead>
+<tbody class="table-hover" id="benefit4">
+
+</tbody>
+</table>
+                        
+                        </div>
+                        </div>
+                        <div class="col-md-8" style="padding-left:0px; padding-right:0px"> 
+						<div class="table-responsive">
+							
+						
+						<table  class="table-fill table table-bordered table-hover table-striped">
+						<thead>
+						<tr>
+						<th class="text-left">Post</th>
+						<th class="text-left">Evidence Category</th>
+						<th class="text-left">Score</th>
+						<th class="text-left">Evidence Link</th>
+						
+						</tr>
+						</thead>
+						<tbody class="table-hover" id="evidence4">
+						
+						</tbody>
+						</table>
+						                        
+						                        </div>
+						
+						
+						</div>
+                        </div>
+	</div>
+	
+	</div>
+
+    
+</div>
+
+</body>
+</html>

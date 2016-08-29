@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	<script src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script type="text/javascript">
+
+
+
+$(document).ready(function(){
+	 var json1=null;
+	   var json=null;
+	   var json2=null;
+	   var json3=null;
+	   var json4=null;
+	   var jsonchart=null;
+	   var json5=null;
+	var getUrlParameter = function getUrlParameter(sParam) {
+	    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+	        sURLVariables = sPageURL.split('&'),
+	        sParameterName,
+	        i;
+
+	    for (i = 0; i < sURLVariables.length; i++) {
+	        sParameterName = sURLVariables[i].split('=');
+
+	        if (sParameterName[0] === sParam) {
+	            return sParameterName[1] === undefined ? true : sParameterName[1];
+	        }
+	    }
+	};
+	param=getUrlParameter('key');
+	$("<a href=\"/FraudDetection/fraudfactor.html?key="+param+"\">Fraud Score Factors</a>").appendTo("#fraudfactor");
+	
+	var dataPoints = [];
+	CanvasJS.addColorSet("greenShades",
+                [
+               "#80ccff",
+                "#80ccff",
+                "#80ccff",
+                "#80ccff"
+                ]);
+	var chart = new CanvasJS.Chart("chartContainer", {
+	colorSet: "greenShades",
+	
+	 
+		title:{
+			text: "Fraud Score Trend"              
+		},
+			
+		toolTip: {
+		  content: "{label} <br/> : {y} "
+		},
+		data: [
+		{
+			
+			
+			dataPoints: []
+			
+				
+			
+		}
+		
+		]
+	
+	});
+	jsonchart="http://" + location.hostname +":8080/FraudDetection/rest/fraud/chart?email="+param;
+	$.getJSON(jsonchart, function (data) {
+
+		var array1=[];
+		var i=0;
+		var j=1;
+		var total=0;
+		$.each(data, function(key, val) {
+			 $.each(val, function(k, v){
+			  array1[i]=v;
+			   i++;
+			 });
+			 dataPoints.push({ label: "week"+j, y: array1[0] });
+			 total+=array1[0];
+			 j++;
+			 i=0;
+		});
+         chart.options.data[0].dataPoints = dataPoints;
+         if(total>0)
+        	 {
+        	 chart.render();
+        	 }
+         else
+        	 {
+        	 chart.render();
+        	 $("#chartContainer").addClass("chartdata");
+        	 var array2=[];
+        	 var a=0;
+        	 var jsondata="http://" + location.hostname +":8080/FraudDetection/rest/fraud/message?email="+param;
+        	 $.getJSON(jsondata, function (data) {
+        		 $.each(data, function(key, val) {
+        			 $.each(val, function(k, v){
+        				  array2[a]=v;
+        				   a++;
+        				 });
+        			 $("<b>"+array2[0]+"</b><br>").appendTo("#blankdata");
+        			 $("<b>Last Updated On: "+array2[1]+"</b>").appendTo("#blankdata");
+        			 a=0;
+        		 });
+        	 });
+        	 }
+     }); 
+	 
+	
+	json="http://" + location.hostname +":8080/FraudDetection/rest/searchcandidate/details?email="+param;
+	$.getJSON(json, function(data) {
+		var array=[];
+			var i=0;
+		$.each(data, function(key, val) {
+			 $.each(val, function(k, v){
+			  array[i]=v;
+			   i++;
+			 });
+			 var ul=$("<ul></ul>");
+			 $("<li><b>First Name</b>:"+array[2]+"</li>").appendTo(ul);
+			 $("<li><b>Email</b>:"+ array[1] +"</li>").appendTo(ul);
+			 $("<li><b>Date Of Birth</b>:"+ array[4] +"</li>").appendTo(ul);
+			 $("<li><b>Resident Since:</b>"+ array[6] +" "+ array[7] +"</li>").appendTo(ul);
+			 ul.appendTo("#info1");
+			 
+			 var ul1=$("<ul></ul>");
+			 $("<li><b>Last Name</b>:"+array[3]+"</li>").appendTo(ul1);
+			 $("<li><b>PhoneNo</b>:"+array[13]+"</li>").appendTo(ul1);
+			 $("<li><b>Current Address</b>:"+ array[8] +" "+ array[9] +"<br>"+ array[10] +","+ array[12] +"<br><b>Pin:</b>"+ array[11] +"</li>").appendTo(ul1);
+			 ul1.appendTo("#info2");
+		});
+	});
+	json1="http://" + location.hostname +":8080/FraudDetection/rest/employment/previous?email="+param;
+	$.getJSON(json1, function(data) {
+		var array1=[];
+			var i=0;
+		$.each(data, function(key, val) {
+			 $.each(val, function(k, v){
+			  array1[i]=v;
+			   i++;
+			 });
+			 var ul=$("<ul></ul>");
+			 $("<li><b>Period:</b>"+ array1[0]+" to "+array1[1]+"</li>").appendTo(ul);
+			 $("<li><b>Employer:</b>"+array1[2]+"</li>").appendTo(ul);
+			 $("<li><b>Income:</b>"+array1[3]+"</li>").appendTo(ul);
+			 ul.appendTo("#previousdetails");
+			 i=0;
+		});
+	});
+	
+	json2="http://" + location.hostname +":8080/FraudDetection/rest/employment/current?email="+param;
+	$.getJSON(json2, function(data) {
+		var array2=[];
+			var i=0;
+		$.each(data, function(key, val) {
+			 $.each(val, function(k, v){
+			  array2[i]=v;
+			   i++;
+			 });
+			 var tr=$("<tr></tr>");
+			 $("<td>"+array2[1]+"</td>").appendTo(tr);
+			 $("<td>"+array2[0]+"</td>").appendTo(tr);
+			 $("<td>"+array2[2]+"</td>").appendTo(tr);
+			 $("<td>"+array2[3]+"</td>").appendTo(tr);
+			 tr.appendTo("#currentdetails");
+			 i=0;
+		});
+	});
+	json3="http://" + location.hostname +":8080/FraudDetection/rest/account/details?email="+param;
+	$.getJSON(json3, function(data) {
+		var array3=[];
+			var i=0;
+		$.each(data, function(key, val) {
+			 $.each(val, function(k, v){
+			  array3[i]=v;
+			   i++;
+			 });
+			 var tr=$("<tr></tr>");
+			 $("<td>"+array3[2]+"</td>").appendTo(tr);
+			 $("<td>"+array3[0]+"</td>").appendTo(tr);
+			 $("<td>"+array3[1]+"</td>").appendTo(tr);
+			 tr.appendTo("#accountdetails");
+			 i=0;
+		});
+	});
+	json4="http://" + location.hostname +":8080/FraudDetection/rest/benefit/current?email="+param;
+	$.getJSON(json4, function(data) {
+		var array4=[];
+			var i=0;
+		$.each(data, function(key, val) {
+			 $.each(val, function(k, v){
+			  array4[i]=v;
+			   i++;
+			 });
+			 var tr=$("<tr></tr>");
+			 $("<td>"+array4[0]+"</td>").appendTo(tr);
+			 $("<td>"+array4[1]+"</td>").appendTo(tr);
+			 $("<td>"+array4[2]+"</td>").appendTo(tr);
+			 tr.appendTo("#benefitTable");
+			 i=0;
+		});
+	});
+	json5="http://" + location.hostname +":8080/FraudDetection/rest/address/previous?email="+param;
+	$.getJSON(json5, function(data) {
+		var array5=[];
+			var i=0;
+		$.each(data, function(key, val) {
+			 $.each(val, function(k, v){
+			  array5[i]=v;
+			   i++;
+			 });
+			 var ul=$("<ul></ul>");
+			 $("<li><b>Period:</b>"+ array5[5]+" to "+array5[6]+"</li>").appendTo(ul);
+			 $("<li><b>Address:</b>"+ array5[0] +","+ array5[1] +"<br>"+ array5[2] +","+ array5[4] +"<br><b>Pin:</b>"+ array5[3] +"</li>").appendTo(ul);
+			 ul.appendTo("#historicaladdress");
+			 i=0;
+		});
+	});
+});
+</script>
+		
+	  <link rel="stylesheet" href="css/style.css">
+	  <link rel="stylesheet" href="css/tabstyle.css">
+	  <style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+
+#relative {
+    position: relative;
+   
+   
+}
+.chartdata{
+	opacity: 0.3;
+}
+.personalinfo{
+  position: absolute;
+    top: 70px;
+    right: 350px;
+   ;
+  
+}
+#chartContainer{
+    position: relative;
+}
+#blank{
+  position: absolute;
+    top: 362px;
+    right: 0px;
+} 
+#blankdata{
+	position: absolute;
+    top: 210px;
+    right: 160px;
+}
+
+</style>
+	 
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <title>Fraud Details</title>
+	</head>
+	<body>
+	 <div id="frauddetails" style="margin-top:40px;" class="mainbox col-md-10 col-md-offset-1 ">
+                    <div class="panel panel-default" style="border-color:black">
+                        <div class="panel-heading  text-center">
+                            <div class="panel-title">Fraud Details</div>
+                            
+                        </div>  
+						<div class="panel-body" >
+						<div class="row">
+						<div class="col-md-6">
+						<h3>Current Benefit Availment</h3>
+						
+                       <table class="table-fill" id="benefitTable">
+                               <tr>
+    <th>Serial No</th>
+    <th>Type</th>
+    <th>Entitlement Amount/Week</th>
+  </tr>
+  
+  
+</table>
+
+						</div>
+						<div class="col-md-6">
+						<h3>Fraud Calculator: 4 Weeks trend</h3>
+						<div id="fraudfactor"></div>
+						<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+						<div id="blank" style="height: 22px; width: 150px;background-color:white"></div> 
+						<div id="blankdata"></div> 
+						
+						
+						</div>
+						</div>
+						</div>
+						</div>
+						 <div class="panel panel-default" style="border-color:black;">
+						 <div class="panel-body"  id="relative" >
+						 <h3>Personal Information</h3>
+						 <div id="info1">
+						 
+						 </div>
+						
+						 <div id="info2" class="personalinfo">
+						   
+						 </div>
+						 
+						 </div>
+						 </div>
+						  <div class="panel panel-default" style="border-color:black">
+						 <div class="panel-body" >
+						 <h3>Account & Employment Details</h3>
+						 
+						 	<div class="row">
+						<div class="col-md-6">
+						
+						<h5>Account Balance</h5>
+						
+                       <table class="table-fill" id="accountdetails">
+                               <tr>
+								    <th>Serial No</th>
+								    <th>Account Type</th>
+								    <th>Balance</th>
+							   </tr>
+							     
+						</table>
+<div>
+<h5 style="padding-top:20px"><b >Historical Address</b></h5>
+<div id="historicaladdress"></div>
+</div>
+						</div>
+						<div class="col-md-6">
+						<h5>Employment Details</h5>
+						                       <table class="table-fill" id="currentdetails">
+                               <tr>
+    <th>Type</th>
+    <th>Start Date</th>
+    <th>Employer</th>
+    <th>Income/Annum</th>
+  </tr>
+</table>
+<div>
+<h5 style="padding-top:30px"><b >Historical employment details</b></h5>
+<div id="previousdetails"></div>
+</div>
+						
+						
+						</div>
+						</div>
+						 
+						 </div>
+						 </div>
+						
+						
+						
+						</div>
+	</body>
+	</html>
