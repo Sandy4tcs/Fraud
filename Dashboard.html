@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/tabstyle.css">
+<script src="js/highcharts.js"></script>
+<script src="js/exporting.js"></script>
+<script src="js/amcharts/amcharts.js"></script>
+<script src="js/amcharts/pie.js"></script>
+<script src="js/amcharts/themes/light.js"></script>
+
+
+<title>Fraud Dashboard</title>
+<script>
+var chart=null;
+var chart1=null;
+var dataPoints = [];
+var categoryjson=null;
+var dp=null;
+var dp1=null;
+var json="http://" + location.hostname +":8080/FraudDetection/rest/dashboard/pichart";
+ $.getJSON(json, function (data) {
+
+	var array1=[];
+	var i=0;
+	$.each(data, function(key, val) {
+		 $.each(val, function(k, v){
+		  array1[i]=v;
+		   i++;
+		 });
+		 dataPoints.push({ "category":array1[0],"count": array1[1] });
+		 i=0;
+	});
+	chart = AmCharts.makeChart( "chartdiv", {
+		  "type": "pie",
+		  "theme": "light",
+		  "dataProvider": dataPoints,
+		  "valueField": "count",
+		  "titleField": "category",
+		  "outlineAlpha": 0.4,
+		  "depth3D": 15,
+		  "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+		  "angle": 30,
+		  "export": {
+		    "enabled": false
+		  },
+		  "listeners": [{
+			    "event": "clickSlice",
+			    "method": function(e) {
+			      dp = e.dataItem.dataContext
+			      if ( dp[chart.colorField] === undefined )
+			    	  {
+			    	  dp[chart.colorField] = "#cc0000"; 
+			    	  $('#myModal').modal('show');
+				      $("#currentdetails").empty();
+				      var category=dp[chart.titleField];
+				      if(category=="Investigate Fraud")
+				    	  {
+				    	  categoryjson="http://" + location.hostname +":8080/FraudDetection/rest/dashboard/categorydetails?key=1";
+				    	  }
+				      if(category=="Keep Monitoring")
+				    	  {
+				    	  categoryjson="http://" + location.hostname +":8080/FraudDetection/rest/dashboard/categorydetails?key=2";
+				    	  }
+				      if(category=="No Action Required")
+				    	  {
+				    	  categoryjson="http://" + location.hostname +":8080/FraudDetection/rest/dashboard/categorydetails?key=3";
+				    	  }
+				      $.getJSON(categoryjson, function (data) {
+				    	  var array=[];
+							var i=0;
+							var th=$("<tr><th>Name</th><th>Fraud Score</th></tr>");
+							 th.appendTo("#currentdetails");
+						$.each(data, function(key, val) {
+							 $.each(val, function(k, v){
+							  array[i]=v;
+							   i++;
+							 });
+							 var tr=$("<tr></tr>");
+							 $("<td>"+array[1]+" "+array[2]+"</td>").appendTo(tr);
+							 $("<td>"+array[0]+"</td>").appendTo(tr);
+							 tr.appendTo("#currentdetails");
+							 i=0;
+						});
+				      });
+			    	  }
+			        
+			      else
+			    	  {
+			    	  dp[chart.colorField] = undefined;
+			    	  
+			    	  }
+			        
+			        
+			      e.chart.validateData();
+			    }
+			  }]
+		} );
+}); 
+ function modalclose()
+ {
+	 
+	 chart.removeListener(chart, "clickSlice", handleClick)
+	 chart1.removeListener(chart1, "clickSlice", handleClick)
+	 function handleClick(event){
+		 if(dp[chart.colorField] == "#cc0000")
+			 {
+			 dp[chart.colorField] = undefined; 
+			 }
+		 if(dp1[chart1.colorField] == "#cc0000")
+		 {
+		 dp1[chart1.colorField] = undefined; 
+		 }
+	 }
+			 chart.validateNow();
+			 chart1.validateNow();
+	 
+ }
+var dataPoints1 = [];
+var json1="http://" + location.hostname +":8080/FraudDetection/rest/dashboard/category";
+$.getJSON(json1, function (data) {
+
+	var array1=[];
+	var i=0;
+	$.each(data, function(key, val) {
+		 $.each(val, function(k, v){
+		  array1[i]=v;
+		   i++;
+		 });
+		 dataPoints1.push({ "category":array1[0],"count": array1[1] });
+		 i=0;
+	});
+	chart1 = AmCharts.makeChart( "chartdiv1", {
+		  "type": "pie",
+		  "theme": "light",
+		  "dataProvider": dataPoints1,
+		  "valueField": "count",
+		  "titleField": "category",
+		  "outlineAlpha": 0.4,
+		  "depth3D": 15,
+		  "balloonText": "[[title]]<br><span style='font-size:10px'><b>[[value]]</b> ([[percents]]%)</span>",
+		  "angle": 30,
+		  "export": {
+		    "enabled": false
+		  },
+		  "listeners": [{
+			    "event": "clickSlice",
+			    "method": function(e) {
+			      dp1 = e.dataItem.dataContext
+			      
+			      if ( dp1[chart.colorField] === undefined )
+			    	  {
+			    	   dp1[chart.colorField] = "#cc0000"; 
+			    	  $('#myModal').modal('show');
+				      $("#currentdetails").empty();
+				      var category=dp1[chart.titleField];
+				      var detailsjson="http://" + location.hostname +":8080/FraudDetection/rest/dashboard/detailschart?category="+category;
+				      $.getJSON(detailsjson, function (data) {
+				    	  var array=[];
+							var i=0;
+							var th=$("<tr><th>Name</th><th>Fraud Score</th></tr>");
+							 th.appendTo("#currentdetails");
+						$.each(data, function(key, val) {
+							 $.each(val, function(k, v){
+							  array[i]=v;
+							   i++;
+							 });
+							 var tr=$("<tr></tr>");
+							 $("<td>"+array[1]+" "+array[2]+"</td>").appendTo(tr);
+							 $("<td>"+array[0]+"</td>").appendTo(tr);
+							 tr.appendTo("#currentdetails");
+							 i=0;
+						});
+				      });
+			    	  }
+			      else
+			    	  {
+			    	  dp1[chart.colorField] = undefined;
+			    	  
+			    	  }
+			        
+			        
+			      e.chart.validateData();
+			    }
+			  }]
+		} );
+}); 
+var graphjson="http://" + location.hostname +":8080/FraudDetection/rest/dashboard/graphchart";
+
+$(function () {
+	
+	var options = {
+			title: {
+	            text: '6 Monthly Trend',
+	            x: -20 //center
+	        },
+	        subtitle: {
+	            text: '',
+	            x: -20
+	        },
+	        xAxis: {
+	        	categories:[]
+	        },
+	        yAxis: {
+	            title: {
+	                text: ''
+	            },
+	            plotLines: [{
+	                value: 0,
+	                width: 1,
+	                color: '#808080'
+	            }]
+	        },
+	        tooltip: {
+	            valueSuffix: '°C'
+	        },
+	        legend: {
+	            layout: 'horizontal',
+	            align: 'left',
+	            verticalAlign: 'bottom',
+	            borderWidth: 0
+	        },
+	        exporting:{
+	        	enabled: false
+	        },
+	        credits:{
+	        	enabled: false
+	        },
+		      series: []
+		};  
+	
+	$.getJSON(graphjson, function(data) {
+
+			options.series = data; 
+			var field=new Array();
+			var d = new Date();
+			var month = new Array();
+			month[0] = "January";
+			month[1] = "February";
+			month[2] = "March";
+			month[3] = "April";
+			month[4] = "May";
+			month[5] = "June";
+			month[6] = "July";
+			month[7] = "August";
+			month[8] = "September";
+			month[9] = "October";
+			month[10] = "November";
+			month[11] = "December";
+			field[0] = month[d.getMonth()-5]+","+d.getFullYear();
+			field[1] = month[d.getMonth()-4]+","+d.getFullYear();
+			field[2] = month[d.getMonth()-3]+","+d.getFullYear();
+			field[3] = month[d.getMonth()-2]+","+d.getFullYear();
+			field[4] = month[d.getMonth()-1]+","+d.getFullYear();
+			field[5] = month[d.getMonth()]+","+d.getFullYear();
+			options.xAxis.categories = field
+			
+	      /* options.series.push(series); */    
+
+	      // Create the chart
+	      $('#container').highcharts(options);
+	    });
+	
+ }); 
+
+
+</script>
+<style>
+#chartdiv {
+  width: 100%;
+  height: 500px;
+}	
+#blank{
+  position: absolute;
+    top: 705px;
+    right: 25px;
+} 		
+.details{
+display:none;
+}									
+</style>
+</head>
+<body>
+<div id="frauddetails" style="margin-top:40px;" class="mainbox col-md-10 col-md-offset-1 ">
+	<div class="panel panel-default" style="border-color:black">
+		<div class="panel-heading  text-center">
+                            <div class="panel-title">Fraud Dashboard : Consolidated</div>
+        </div>
+        <div class="panel-body" style="border-color:black">
+             <div class="row">
+	             <div class="container-fluid">
+	                  <div class="col-md-6">
+	                  			 
+	                            <div id="chartdiv" style="height: 300px; border-color:black;"></div>
+	                  </div>
+	                  <div class="col-md-6">
+	                  			
+	                            <div id="chartdiv1" style="height: 300px; border-color:black;"></div>
+	                  </div>
+	             </div>
+             </div>
+             <div class="row">
+			 <div class="modal fade" id="myModal" role="dialog">
+			    <div class="modal-dialog">
+			    
+			      <!-- Modal content-->
+			      <div class="modal-content">
+			        <div class="modal-body">
+			          <table id="currentdetails" class="table-striped"></table>
+			        </div>
+			        <div class="modal-footer">
+			          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="modalclose();">Close</button>
+			        </div>
+			      </div>
+			      
+			    </div>
+			  </div>
+             </div> 
+        </div>
+        <hr>
+        <div class="panel-body" >
+             <div id="container" style="height: 300px; width: 100%;"></div>
+             
+        </div>
+         
+	</div>
+</div>
+</body>
+</html>
